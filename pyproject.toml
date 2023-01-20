@@ -1,0 +1,40 @@
+[build-system]
+requires = [ "setuptools", "setuptools-scm",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py_version_from_tag"
+version = "1.1.0"
+description = "A simple tool to automatically write latest tag name to version of python setup files."
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = [ "git", "tag", "setup",]
+classifiers = [ "Programming Language :: Python :: 3",]
+dependencies = [ "toml",]
+[[project.authors]]
+name = "Jost Prevc"
+email = "jost.prevc@gmail.com"
+
+[mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[project.license]
+text = "MIT"
+
+[project.optional-dependencies]
+dev = [ "pytest", "pylint", "pre-commit", "black[d]", "mypy", "tox", "types-beautifulsoup4", "types-requests", "types-PyYAML",]
+test = [ "pytest",]
+
+[project.scripts]
+py_version_from_tag = "py_version_from_tag.__main__:main"
+
+[tool.setuptools]
+packages = [ "py_version_from_tag",]
+
+[tool.black]
+line-length = 120
