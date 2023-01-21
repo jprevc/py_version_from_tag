@@ -52,3 +52,11 @@ def test_replace_version(
         toml_content = toml.load(file)
 
     assert toml_content["project"]["version"] == "new_test_string"
+
+
+def test_get_current_tag_raises_error_if_there_is_no_tag(monkeypatch):
+    mock_subprocess_run_func = mocks.create_mock_subprocess_return_object(b"")
+    monkeypatch.setattr(subprocess, "run", mock_subprocess_run_func)
+
+    with pytest.raises(RuntimeError):
+        utils.get_current_tag()

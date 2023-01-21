@@ -32,12 +32,14 @@ def get_current_tag() -> str:
 
     :raises RuntimeError: If no tags could be found on the current commit.
     """
-    tag_name = subprocess.run("git tag --points-at HEAD", stdout=subprocess.PIPE, check=True)
+    tag_name_raw = subprocess.run("git tag --points-at HEAD", stdout=subprocess.PIPE, check=True)
+
+    tag_name = tag_name_raw.stdout.decode("utf8").split("\n")[0]
 
     if tag_name == "":
         raise RuntimeError("Could not find any tags on the current commit.")
 
-    return tag_name.stdout.decode("utf8").split("\n")[0]
+    return tag_name
 
 
 def get_version_from_tag(tag: str) -> str:
