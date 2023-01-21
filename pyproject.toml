@@ -5,10 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "py_version_from_tag"
 version = "1.0.0"
-description = "A simple tool to automatically write latest tag name to version of python setup files."
+description = "A simple tool to automatically write git tag name to version field of python setup files."
 readme = "README.md"
 requires-python = ">=3.7"
-keywords = [ "git", "tag", "setup",]
+keywords = [ "git", "tag", "setup", "build", "pyproject.toml",]
 classifiers = [ "Programming Language :: Python :: 3",]
 dependencies = [ "toml",]
 [[project.authors]]
