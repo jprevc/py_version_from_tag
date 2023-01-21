@@ -1,23 +1,23 @@
-import subprocess
-import toml
+import argparse
 
-def main():
-    try:
-        tag_name = subprocess.run("git describe --tags --abbrev=0", stdout=subprocess.PIPE, check=True)
-    except subprocess.CalledProcessError as exc:
-        if exc.returncode == 128:
-            raise RuntimeError("No tags found in git history.") from exc
-        raise exc
+from py_version_from_tag import utils
 
-    tag_name = tag_name.stdout.decode("utf8").split("\n")[0]
 
-    with open("pyproject.toml", "r", encoding="utf8") as file:
-        pyproject_toml = toml.load(file)
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        prog="py_version_from_tag",
+        description="Writes name of the tag to version field of python setup file.",
+    )
 
-    pyproject_toml["project"]["version"] = tag_name
+    parser.add_argument("-p", "--path", required=False, default="pyproject.toml")
+    parser.add_argument("-l", "--latest", required=False, action="store_true")
 
-    with open("pyproject.toml", "w", encoding="utf8") as file:
-        toml.dump(pyproject_toml, file)
+    args = parser.parse_args()
+
+    tag_func = utils.get_latest_tag if args.latest else utils.get_current_tag
+
+    tag_name = tag_func()
+    utils.replace_version(args.path, utils.get_version_from_tag(tag_name))
 
 
 if __name__ == "__main__":
