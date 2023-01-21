@@ -14,7 +14,7 @@ def get_latest_tag(git_path: str = "git") -> str:
     :raises subprocess.CalledProcessError: If some unknown issue occured when running git command on CLI.
     """
     try:
-        tag_name = subprocess.run(f"{git_path} describe --tags --abbrev=0", stdout=subprocess.PIPE, check=True)
+        tag_name = subprocess.run([git_path, "describe", "--tags", "--abbrev=0"], stdout=subprocess.PIPE, check=True)
     except subprocess.CalledProcessError as exc:
         if exc.returncode == 128:
             raise RuntimeError("No tags found in git history.") from exc
@@ -32,7 +32,7 @@ def get_current_tag(git_path: str = "git") -> str:
 
     :raises RuntimeError: If no tags could be found on the current commit.
     """
-    tag_name_raw = subprocess.run(f"{git_path} tag --points-at HEAD", stdout=subprocess.PIPE, check=True)
+    tag_name_raw = subprocess.run([git_path, "tag", "--points-at", "HEAD"], stdout=subprocess.PIPE, check=True)
 
     tag_name = tag_name_raw.stdout.decode("utf8").split("\n")[0]
 
