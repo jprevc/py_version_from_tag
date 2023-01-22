@@ -7,9 +7,8 @@ when you have already written it as a tag name.
 
 Usage
 ----------
-
 Prerequisites:
-- Your working directory should be placed on a valid git repository
+- Your working directory should be placed on a valid git repository (alternatively, use *--root* argument)
 - The current commit (HEAD) should be tagged
 
 ```bash
@@ -22,6 +21,12 @@ you can use the *-l* switch, like this:
 ```bash
     python -m py_version_from_tag -l
 ```
+
+By default, the string in tag name will be parsed and made conformant to the rules set by
+[PEP440](https://peps.python.org/pep-0440/). This means for example that tag name "v1.2.0" will become "1.2.0" as
+version and tag "v0.2_alpha" will become "0.2a0". If you would for any reason wish to disable this behaviour and write
+unmodified string to version field, you can do this with *--ignore-pep* switch.
+
 For full list of available options, run
 
 ```bash

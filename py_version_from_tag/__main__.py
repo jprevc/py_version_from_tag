@@ -14,6 +14,7 @@ def main() -> None:
     parser.add_argument("-l", "--latest", required=False, action="store_true")
     parser.add_argument("-g", "--git", required=False, default="git")
     parser.add_argument("-r", "--root", required=False, default=utils.DEFAULT_ROOT)
+    parser.add_argument("-i", "--ignore-pep", required=False, action="store_true")
 
     args = parser.parse_args()
 
@@ -21,7 +22,7 @@ def main() -> None:
     toml_path = pathlib.Path(args.root) / args.path
 
     tag_name = git_command_runner(args.git, args.root).run()
-    utils.replace_version(toml_path, utils.get_version_from_tag(tag_name))
+    utils.replace_version(toml_path, utils.get_version_from_tag(tag_name, args.ignore_pep))
 
 
 if __name__ == "__main__":

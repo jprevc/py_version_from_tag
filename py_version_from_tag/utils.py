@@ -4,6 +4,7 @@ import abc
 import os.path
 import subprocess
 import pathlib
+from packaging import version  # type: ignore
 
 import toml
 
@@ -70,19 +71,17 @@ class GitCurrentTagCommandRunner(GitCommandRunner):
         return tag_name
 
 
-def get_version_from_tag(tag: str) -> str:
+def get_version_from_tag(tag: str, ignore_pep: bool = False) -> str:
     """
     Obtains version string from tag name.
 
     :param tag: Tag string from which version string will be obtained.
+    :param ignore_pep: If False (default), returned version will be a parsed version of input tag and it will conform
+                       to PEP440 rules for python packaging versioning. If True, returned string will not be modified.
 
     :return: Version string in form "X.Y.Z"
     """
-
-    if tag.startswith("v"):
-        return tag[1:]
-
-    return tag
+    return tag if ignore_pep else str(version.Version(tag))
 
 
 def replace_version(setup_file_path: str | pathlib.Path, new_string: str) -> None:

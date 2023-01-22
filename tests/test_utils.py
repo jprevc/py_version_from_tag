@@ -11,10 +11,18 @@ from tests import mocks
 
 @pytest.mark.parametrize(
     "tag_name,expected",
-    (("v3.2.1", "3.2.1"), ("3.2.1", "3.2.1"), ("v1.2", "1.2"), ("v0.2_alpha", "0.2_alpha"), ("v1.2_v", "1.2_v")),
+    (("v3.2.1", "3.2.1"), ("3.2.1", "3.2.1"), ("v1.2", "1.2"), ("v0.2_alpha", "0.2a0")),
 )
-def test_get_version_from_tag_removes_v_prefix(tag_name: str, expected: str):
+def test_get_version_from_tag_makes_tags_pep440(tag_name: str, expected: str):
     assert utils.get_version_from_tag(tag_name) == expected
+
+
+@pytest.mark.parametrize(
+    "tag_name,expected",
+    (("v3.2.1", "v3.2.1"), ("3.2.1", "3.2.1"), ("v1.2", "v1.2"), ("v0.2_alpha", "v0.2_alpha")),
+)
+def test_get_version_from_tag_set_to_ignore_returns_tags_as_is(tag_name: str, expected: str):
+    assert utils.get_version_from_tag(tag_name, ignore_pep=True) == expected
 
 
 @pytest.mark.parametrize("cli_stdout, expected", [(b"v3.1.0\n", "v3.1.0"), (b"v3.1.0\nv4.1.3\n", "v3.1.0")])
